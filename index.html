@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Djiwo code player</title>
+  <meta name="author" content="Djiwo Weenas">
+
+
+<!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+  </script>
+
+
+<!-- jquery ui -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js">
+</script>
+
+    <style type="text/css">
+  
+        
+        body {
+ 
+            margin: 0;
+            display:flex;
+            flex-direction: column;
+            /* border: red solid 1px; */
+            height: 95vh;
+        }
+        
+        .row{
+            display: flex;
+            flex-direction: row;
+
+        }
+
+        #firstRow{
+
+            background-color:#E3DCB9;
+            height: 160px;
+            align-items: center;
+            
+        }
+
+        #secondRow{
+
+
+            align-items: center;
+            margin: 0 50px;
+            border-right: black solid 1px;
+            flex: 1;
+
+            /* border: red solid 1px; */
+        }
+
+        .secondRowItem{
+            height: 100%;
+            /* border: blue solid 1px; */
+            width: 50%;
+            border-left: black 1px solid;
+            font-family: monospace;
+            font-size: large;
+        }
+
+
+        #logoWrapper{
+
+        }
+
+        #logo{
+            height: 200px;
+        }
+
+        .selectable{
+            margin: 0 10px;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 15px;
+        }
+
+        #runCode{
+            margin: 20px;
+            flex:1;
+        }
+
+        #cssDiv, #javascriptDiv{
+            display: none;
+        }
+
+        /* div, ol, li{
+            border: red solid 1px;
+        } */
+
+
+
+        #viewselectors .ui-selecting { background-color: #c99872); }
+        #viewselectors .ui-selected { background-color: #c99872; }
+        #viewselectors { 
+            list-style-type: none;
+            float:none;
+            flex: 1;
+            }
+
+        #htmlSelected, #cssSelected, #javascriptSelected{
+            display: none;
+        }
+
+
+        textarea{
+            resize:none;
+            width: 100%;
+            margin:auto;
+            height: 100%;
+            box-sizing: border-box;
+            font-family: monospace;
+            font-size: large;
+        }
+
+        .secondRowPadding{
+            padding: 10px;
+        }
+
+        #outputIframe{
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        iframe{
+            border: none;
+        }
+
+        #redBackground{
+            color: red;
+        }
+
+        .firstRowItem{
+            width: 33%;
+        }
+
+
+
+
+    </style>
+
+</head>
+
+<div id="firstRow" class="row">
+    <div id="logoWrapper" class="firstRowItem"><img id="logo" src="Djiwo codeplayer transparent.png" alt=""></div>
+
+    <ol id="viewselectors" class="row firstRowItem">
+        <li class="ui-selected selectable">HTML</li>
+        <li class="selectable">CSS</li>
+        <li class="selectable">Javascript</li>
+        <li class="selectable ui-selected">Output</li>
+    </ol>
+
+    <div class="firstRowItem"></div>
+
+</div>
+ 
+
+
+<div id="secondRow" class="row">
+    <div class="secondRowItem">
+        <textarea class="secondRowPadding" id="htmlInput" rows="4" ><div id="example1">Hi there!</div><br><div id="example2">Hi there!</div></textarea>
+    </div>
+    <div id="cssDiv" class="secondRowItem">
+        <textarea id="cssInput" class="secondRowPadding" rows="4">#example1{color: red}
+        </textarea>
+    </div>
+    <div id="javascriptDiv" class="secondRowItem">
+        <textarea class="secondRowPadding" id="javascriptInput" rows="4">document.getElementById("example2").style.color = 'blue'</textarea>
+    </div>
+    <div id="codeOutput" class="secondRowItem">
+        <iframe id="outputIframe" class="secondRowPadding"></iframe>
+    </div>
+
+
+    
+</div>
+
+<body>
+
+<div id="header" class="classexample anotherclass"></div>
+<div id="secondId"></div>
+
+    <script>
+    
+
+        if(typeof jQuery == "undefined"){
+            console.log("jQuery not installed");
+        } else{
+            console.log("jQuery is installed");
+        }
+
+        var arrayOfSelectedButtons = [];
+
+        var amountOfColumns = 2;
+
+        $("#viewselectors") .selectable({
+            selected: function( event, ui ) {
+                amountOfColumns++;
+                console.log(amountOfColumns)
+            },
+            unselected: function( event, ui ) {
+                amountOfColumns--;
+                console.log(amountOfColumns);
+            },
+            stop: function( event, ui ) {
+
+                arrayOfSelectedButtons = [];
+                
+                $( ".ui-selected", this ).each(function() {
+                    arrayOfSelectedButtons.push($( "#viewselectors li" ).index( this ));
+                    });
+                
+                console.log(arrayOfSelectedButtons);
+
+                // Hide HTML input column if the HTML button is unselected
+                if (arrayOfSelectedButtons.indexOf(0) == -1) {
+                        $("#htmlInput").hide();
+                } else if (arrayOfSelectedButtons.indexOf(0) > -1) {
+                        $("#htmlInput").show();
+                };
+
+
+                // Hide CSS input column if the css button is unselected
+                if (arrayOfSelectedButtons.indexOf(1) == -1) {
+                        $("#cssDiv").hide();
+                } else if (arrayOfSelectedButtons.indexOf(1) > -1) {
+                        $("#cssDiv").show();
+                };
+
+                // Hide js input column if the js button is unselected
+                if (arrayOfSelectedButtons.indexOf(2) == -1) {
+                        $("#javascriptDiv").hide();
+                } else if (arrayOfSelectedButtons.indexOf(2) > -1) {
+                        $("#javascriptDiv").show();
+                };
+
+                // Hide output column if the HTML button is unselected
+                if (arrayOfSelectedButtons.indexOf(3) == -1) {
+                        $("#codeOutput").hide();
+                } else if (arrayOfSelectedButtons.indexOf(3) > -1) {
+                        $("#codeOutput").show();
+                };
+
+                if (amountOfColumns == 0) {
+                    console.log('nothing to do');
+                };
+
+                if (amountOfColumns == 1) {
+                    $(".secondRowItem").width("100%");
+                };
+
+                if (amountOfColumns == 2) {
+                    $(".secondRowItem").width("50%");
+                };
+
+                if (amountOfColumns == 3) {
+                    $(".secondRowItem").width("33.33%");
+                };
+                if (amountOfColumns == 4) {
+                    $(".secondRowItem").width("25%");
+                };
+
+
+            }
+        });
+
+        // Make Iframe body have a margin of 10.
+
+        $('iframe').contents().find("body").css({"margin": "10px", "border": "none", "font-family": "monospace", "font-size": "large"});
+
+
+        // Only once, when the page loads, make output reflext the initial values of the textarea inputs
+        
+        insertBody();
+        insertCss();
+
+        // Make the HTML input have an effect on the output
+
+        var valueHtml = "";
+        $( "#htmlInput" ).keyup(function() {
+            insertHtml(); //this doesn't work?//
+        });
+
+        var valueCss = "";
+
+        $( "#cssInput" ).keyup(function() {
+            valueCss = $('#cssInput').val();
+  
+        });
+
+        $("textarea").keyup(function(){
+            $("iframe").html($("#htmlInput").val())
+        });
+        
+        // $('textarea').keyup(function() {
+            
+        //     $("#codeOutput").html('<html>
+        //         <head>
+        //              <style>' + valueCss + "
+        //              </style>
+        //         </head>
+        //         <body>" + " $('#htmlInput').val() " +"
+        //         </body>
+        //     </html>"
+     
+            
+        //     );
+        
+        // });
+        
+        // Make the CSS input have an effect on the output
+
+
+        // $( "#cssInput" ).keyup(function() {
+        //     var valueCss = $('#cssInput').val();
+        //     $( "#codeOutput" ).css( valueCss );
+        // });
+
+
+        
+        $("#viewselectors").on("selectablestart", function (event, ui) {
+                    event.originalEvent.ctrlKey = true;
+        });
+
+        function insertBody() {
+            $('iframe').contents().find("body").html(
+                $('#htmlInput').val() + '<script>'+ $('#javascriptInput').val())
+        };
+
+        function insertCss() {
+            $('iframe').contents().find("head").html(
+                '<style type="text/css">' + $('#cssInput').val() + '</style>'
+        );
+        }
+
+
+
+
+    </script>
+
+</body>
+
+</html>
