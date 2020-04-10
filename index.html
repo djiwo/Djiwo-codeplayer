@@ -165,7 +165,8 @@
 
 <div id="secondRow" class="row">
     <div class="secondRowItem">
-        <textarea class="secondRowPadding" id="htmlInput" rows="4" ><div id="example1">Hi there!</div><br><div id="example2">Hi there!</div></textarea>
+        <textarea class="secondRowPadding" id="htmlInput" rows="4" ><div id="example1">Hi there!</div>
+<div id="example2">Hi there!</div></textarea>
     </div>
     <div id="cssDiv" class="secondRowItem">
         <textarea id="cssInput" class="secondRowPadding" rows="4">#example1{color: red}
@@ -283,21 +284,24 @@
 
         // Make the HTML input have an effect on the output
 
-        var valueHtml = "";
-        $( "#htmlInput" ).keyup(function() {
-            insertHtml(); //this doesn't work?//
+        $("textarea").on('change keyup paste', function() {
+            insertBody();
+        insertCss();
         });
+        // $( "#htmlInput" ).keyup(function() {
+            
 
-        var valueCss = "";
+        // });
 
-        $( "#cssInput" ).keyup(function() {
-            valueCss = $('#cssInput').val();
+
+        // $( "#cssInput" ).keyup(function() {
+        //     insertBody();
+        //     insertCss();
+
   
-        });
+        // });
 
-        $("textarea").keyup(function(){
-            $("iframe").html($("#htmlInput").val())
-        });
+
         
         // $('textarea').keyup(function() {
             
