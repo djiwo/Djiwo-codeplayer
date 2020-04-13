@@ -164,7 +164,7 @@
 
 
 <div id="secondRow" class="row">
-    <div class="secondRowItem">
+    <div id="htmlInputWrapper" class="secondRowItem">
         <textarea class="secondRowPadding" id="htmlInput" rows="4" ><div id="example1">Hi there!</div>
 <div id="example2">Hi there!</div></textarea>
     </div>
@@ -222,9 +222,9 @@
 
                 // Hide HTML input column if the HTML button is unselected
                 if (arrayOfSelectedButtons.indexOf(0) == -1) {
-                        $("#htmlInput").hide();
+                        $("#htmlInputWrapper").hide();
                 } else if (arrayOfSelectedButtons.indexOf(0) > -1) {
-                        $("#htmlInput").show();
+                        $("#htmlInputWrapper").show();
                 };
 
 
